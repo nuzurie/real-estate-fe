@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import HouseView, {House} from "../components/House";
 import axios from "axios";
 import styled from 'styled-components';
@@ -11,6 +12,7 @@ import {
     findIconDefinition
 } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {useEffect, useState} from "react";
 
 library.add(fas)
 config.autoAddCss = false
@@ -28,60 +30,55 @@ interface Listing {
     listingType: string;
 }
 
-type Props = {
-    listingDTOList: Listing[]
-}
+function ListingComponent( ) {
 
-function ListingComponent({listingDTOList}:Props) {
-        console.log(listingDTOList)
-        if (listingDTOList) {
-            return (
+    const [listingDTOList, setListingDtoList] = useState<Listing[] | undefined>([]);
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/listings')
+            .then(res => setListingDtoList(res.data._embedded.listingDTOList))
+            .catch(err => console.log(err))
+    }, [])
+
+    return (
                 <Container>
-                    {listingDTOList.map(listing => (
-                        <Card>
-                            <Image src={'https://nypost.com/wp-content/uploads/sites/2/2021/11/veronika-rajek-_30.jpg?quality=90&strip=all'} />
-                            <HouseView house={listing.house} />
-                            <p>${Number(listing.price).toLocaleString('en-US')}  {listing.listingType}</p>
-                            <IconsDiv>
-                                {/*<h4>Hii?</h4>*/}
-                                {/*<h4>Hello?</h4>*/}
-                                <FontAwesomeIcon icon={heartIconDefinition} color={"red"} size={"lg"}/>
-                                <FontAwesomeIcon icon={mapIconDefinition}  color={"green"} size={"lg"}/>
-                            </IconsDiv>
-                        </Card>
+                    {listingDTOList?.map(listing => (
+                        <Link href={`/listings/${listing.id}`}>
+                            <Card key={listing.id}>
+                                <Image src={'https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg'} />
+                                <Price>${Number(listing.price).toLocaleString('en-US')}</Price>
+                                <HouseView house={listing.house} />
+                                <IconsDiv>
+                                    <FontAwesomeIcon icon={heartIconDefinition} color={"pink"} size={"lg"}/>
+                                    <FontAwesomeIcon icon={mapIconDefinition}  color={"lightblue"} size={"lg"}/>
+                                </IconsDiv>
+                            </Card>
+                        </Link>
                     ))}
                 </Container>
-            )
-        } else {
-            return (
-                <div>Loading</div>
-            )
-        }
+    )
 }
 
-export async function getServerSideProps() {
-    try {
-        const res = await axios.get('http://localhost:8080/api/listings')
-        const data = res.data
-        return {
-            props: data._embedded,
-        }
-    } catch (e) {
-       console.log(e)
-    }
-}
+// export async function getServerSideProps() {
+//     try {
+//         const res = await axios.get('http://localhost:8080/api/listings')
+//         const data = res.data
+//         return {
+//             props: data._embedded,
+//         }
+//     } catch (e) {
+//        console.log(e)
+//     }
+// }
 
 const IconsDiv = styled.div`
   display: flex;
   flex-direction: row;
-  //place-items: center;
   align-content: space-between;
   margin-bottom: 10px;
   margin-left: 22px;
-  margin-right: 20px;
-  ////align-content: space-between;
-  ////align-items: ;
-  gap: 220px;
+  margin-right: 22px;
+  gap: 200px;
   flex-wrap: wrap;
   width: 100%;
 `
@@ -91,32 +88,37 @@ const Container = styled.div`
   grid-template-columns: repeat(auto-fit, 20rem);
   justify-content: center;
   grid-gap: 2rem;
+  margin: 15px;
+`
+
+const Price = styled.h3`
+  margin-left: 15px;
 `
 
 const Card = styled.div`
   box-shadow: 0px 2px 8px 0px lightgrey;
-    background: cyan;
-    margin: 0px;
-    border-radius: 1rem;
+  background: antiquewhite;
+  margin: 0px;
+  border-radius: 1rem;
   width: 300px;
   contain: content;
-  box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
-  text-align: center;
   position: relative;
+  &:hover {
+    background-color: rgb(62, 62, 62);
+    color: white;
+    cursor: pointer;
+    transform: scale(1.03);
+    transition: all 0.5s ease;
+  }
 `
 
 const Image = styled.img`
-  //position: absolute;
   height: 10rem;
   width: 100%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  //width: 30rem;
-  //background-size: cover;
 `
-
-
 
 export default ListingComponent;
