@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import HouseView, {House} from "../components/House";
+import HouseView, {House} from "../../public/components/House";
 import axios from "axios";
 import styled from 'styled-components';
 import { config } from '@fortawesome/fontawesome-svg-core'
@@ -40,16 +40,20 @@ function ListingComponent( ) {
             .catch(err => console.log(err))
     }, [])
 
+    function handleFavourite(id: string) {
+        alert(`favourited ${id}`)
+    }
+
     return (
                 <Container>
                     {listingDTOList?.map(listing => (
-                        <Link href={`/listings/${listing.id}`}>
-                            <Card key={listing.id}>
+                        <Link href={`/listings/${listing.id}`} key={listing.id}>
+                            <Card >
                                 <Image src={'https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg'} />
                                 <Price>${Number(listing.price).toLocaleString('en-US')}</Price>
                                 <HouseView house={listing.house} />
                                 <IconsDiv>
-                                    <FontAwesomeIcon icon={heartIconDefinition} color={"pink"} size={"lg"}/>
+                                    <FontAwesomeIcon onClick={() => handleFavourite(listing.id)} icon={heartIconDefinition} color={"pink"} size={"lg"}/>
                                     <FontAwesomeIcon icon={mapIconDefinition}  color={"lightblue"} size={"lg"}/>
                                 </IconsDiv>
                             </Card>
