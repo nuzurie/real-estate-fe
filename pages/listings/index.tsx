@@ -30,7 +30,7 @@ interface Listing {
     listingType: string;
 }
 
-function ListingComponent( ) {
+function ListingComponent() {
 
     const [listingDTOList, setListingDtoList] = useState<Listing[] | undefined>([]);
 
@@ -78,13 +78,9 @@ function ListingComponent( ) {
 const IconsDiv = styled.div`
   display: flex;
   flex-direction: row;
-  align-content: space-between;
-  margin-bottom: 10px;
-  margin-left: 22px;
-  margin-right: 22px;
-  gap: 200px;
+  justify-content: space-between;
+  margin: 0px 22px 10px 22px;
   flex-wrap: wrap;
-  width: 100%;
 `
 
 const Container = styled.div`
@@ -93,6 +89,7 @@ const Container = styled.div`
   justify-content: center;
   grid-gap: 2rem;
   margin: 15px;
+  border: 10px greenyellow;
 `
 
 const Price = styled.h3`

@@ -38,7 +38,7 @@ function HouseView({ house }: Props) {
         <Container>
             <Header>{house.civicAddress}, {house.area}</Header>
             <Header>{house.province}. {house.postalCode}</Header>
-            <RoomInfo><Text>{house.rooms}</Text><FontAwesomeIcon icon={bathIconDefinition} size={"2x"}/> <Text>{house.bathrooms}</Text><FontAwesomeIcon icon={bedIconDefinition} size={"2x"}/></RoomInfo>
+            <RoomInfo><Text>{house.rooms}</Text><FontAwesomeIcon icon={bedIconDefinition} size={"2x"}/> &nbsp;&nbsp;<Text>{house.bathrooms}</Text><FontAwesomeIcon icon={bathIconDefinition} size={"2x"}/></RoomInfo>
         </Container>
     )
 }
