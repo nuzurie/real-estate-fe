@@ -12,7 +12,8 @@ import {
     findIconDefinition
 } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {useEffect, useState} from "react";
+import {Fragment, useEffect, useState} from "react";
+import Navbar from "../../public/components/Navbar";
 
 library.add(fas)
 config.autoAddCss = false
@@ -28,6 +29,7 @@ interface Listing {
     house: House
     price: bigint
     listingType: string;
+    imageUrl?: string
 }
 
 function ListingComponent() {
@@ -45,11 +47,13 @@ function ListingComponent() {
     }
 
     return (
+        <Fragment>
+            <Navbar />
                 <Container>
                     {listingDTOList?.map(listing => (
                         <Link href={`/listings/${listing.id}`} key={listing.id}>
                             <Card >
-                                <Image src={'https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg'} />
+                                <Image src={ listing.imageUrl ? listing.imageUrl : 'https://www.rocketmortgage.com/resources-cmsassets/RocketMortgage.com/Article_Images/Large_Images/TypesOfHomes/types-of-homes-hero.jpg'} />
                                 <Price>${Number(listing.price).toLocaleString('en-US')}</Price>
                                 <HouseView house={listing.house} />
                                 <IconsDiv>
@@ -60,6 +64,7 @@ function ListingComponent() {
                         </Link>
                     ))}
                 </Container>
+        </Fragment>
     )
 }
 
@@ -88,7 +93,7 @@ const Container = styled.div`
   grid-template-columns: repeat(auto-fit, 20rem);
   justify-content: center;
   grid-gap: 2rem;
-  margin: 15px;
+  margin: 95px 15px 15px 15px;
   border: 10px greenyellow;
 `
 
@@ -98,7 +103,7 @@ const Price = styled.h3`
 
 const Card = styled.div`
   box-shadow: 0px 2px 8px 0px lightgrey;
-  background: antiquewhite;
+  background: #FFF8E8;
   margin: 0px;
   border-radius: 1rem;
   width: 300px;
@@ -106,8 +111,8 @@ const Card = styled.div`
   font-family: "Open Sans", sans-serif;
   position: relative;
   &:hover {
-    background-color: rgb(62, 62, 62);
-    color: white;
+    //background-color: rgb(62, 62, 62);
+    //color: white;
     cursor: pointer;
     transform: scale(1.03);
     transition: all 0.5s ease;

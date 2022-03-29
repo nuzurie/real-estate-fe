@@ -233,7 +233,7 @@ const sharedStyle = css`
 
 const FormWrapper = styled.div`
   position: fixed;
-  top: 0;
+  top: 80px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -255,6 +255,11 @@ const Form = styled.form`
   box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.2);
   margin: 120px 20px;
   overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
 `
 
 const StyledFieldSet = styled.fieldset`
